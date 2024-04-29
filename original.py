@@ -1,11 +1,5 @@
 import pandas as pd
 
-caminho_arquivo = r"C:\Users\mariana.silva\Downloads\sispass_2018_2023.xlsx"
-df = pd.read_excel(caminho_arquivo)
-
-colunas_anos = [coluna for coluna in df.columns if coluna.startswith('s')]
-dados_linhas = []
-
 def calculate_bird_rate(row, prefix, year):
     """
     Calcula a taxa de aves com base nos dados da linha.
@@ -57,12 +51,20 @@ def process_data(file_path):
 
     df_final = pd.DataFrame(dados_linhas)
     return df_final.drop_duplicates()
+    
+def main():
+    file_path = r"C:\Users\maria\OneDrive\Codex\projetoPlanilha\projetoPlanilha\sispass_2018_2023.xlsx"
+    output_file = 'sispassAtualizado.xlsx'
 
-colunas_ordenadas = ['m.cod_municipio', 'm.nom_municipio', 'm.sig_uf', 'm.nom_regiao', 'ano', 'criadores', 'aves',
-                     'tx_aves']
-df_final = df_final[colunas_ordenadas]
+    df_final = process_data(file_path)
+    colunas_ordenadas = ['m.cod_municipio', 'm.nom_municipio', 'm.sig_uf', 'm.nom_regiao', 'ano', 'criadores', 'aves',
+                         'tx_aves']
+    df_final = df_final[colunas_ordenadas]
+    df_final.to_excel(output_file, index=False)
 
-# tava duplicando a planilha inteira, então isso daqui remove duplicatas
-df_final = df_final.drop_duplicates()
+    print(df_final)
 
-df_final.to_excel('sispassAtualizado.xlsx', index=False)
+
+if __name__ == "__main__":
+    main()
+
