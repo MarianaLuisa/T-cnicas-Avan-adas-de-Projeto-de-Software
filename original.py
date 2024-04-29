@@ -6,19 +6,23 @@ df = pd.read_excel(caminho_arquivo)
 colunas_anos = [coluna for coluna in df.columns if coluna.startswith('s')]
 dados_linhas = []
 
-for _, row in df.iterrows():
+def calculate_bird_rate(row, prefix, year):
+    """
+    Calcula a taxa de aves com base nos dados da linha.
 
-    for coluna in colunas_anos:
-        ano = int(coluna.split('_')[-1][:4])
-        prefixo = coluna.split('.')[0]
+    Args:
+        row (Series): Linha do DataFrame.
+        prefix (str): Prefixo das colunas.
+        year (int): Ano dos dados.
 
-        col_criadores = f"{prefixo}.qtd_criadores_{ano}0801"
-        col_aves = f"{prefixo}.qtd_aves_{ano}0801"
-        criadores = row[col_criadores]
-        aves = row[col_aves]
-
-        #calculo da taxa
-        tx_aves = round(aves / criadores, 2) if criadores != 0 else 0
+    Returns:
+        float: Taxa de aves.
+    """
+    col_criadores = f"{prefix}.qtd_criadores_{year}0801"
+    col_aves = f"{prefix}.qtd_aves_{year}0801"
+    criadores = row[col_criadores]
+    aves = row[col_aves]
+    return round(aves / criadores, 2) if criadores != 0 else 0
 
 
         nova_linha = {
